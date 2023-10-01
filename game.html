@@ -1,0 +1,297 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Project Website</title>
+    <script src="../Versions/processing-js-1.6.6/processing.js"></script>
+  </head>
+  <body>
+    <script type="text/processing">
+      void setup() {
+        size(1350,642);
+        textAlign(CENTER, CENTER);
+        avaLeft = loadImage("avaLeft.gif");
+
+        backGround = loadImage("background.gif");
+        enemy1 = loadImage("demon2.gif");
+        enemy2 = loadImage("demon3.gif");
+        enemy3 = loadImage("demon4.gif");
+        enemy4 = loadImage("demon5.gif");
+        enemy5 = loadImage("demon.gif");
+
+      }
+  var speed = 7; //sets player speed
+
+  //var bulletX = [];
+  //var bulletY = [];
+
+  var playerX = -200;
+  var playerY = -200;
+  var start = 0;
+  var startH = 1;
+  var wave = -1;
+  var textX = 650;
+  var textY = 350;
+  var endX = -300;
+  var endY = -300;
+  var overX = -300;
+  var overY = -300;
+//first enemy
+  var enemyX1 = -200; //xCord for enemy 1
+  var enemyY1 = -200; //yCord for enemy 1
+  var enemy1h = 0; //h = health
+  var enemy1s = 0; //s = speed
+
+//second enemy
+  var enemyX2 = -200;
+  var enemyY2 = -200;
+  var enemy2h = 0;
+  var enemy2s = 0;
+
+//third enemy
+  var enemyX3 = -200;
+  var enemyY3 = -200;
+  var enemy3h = 0;
+  var enemy3s = 0;
+
+//fourth enemy
+  var enemyX4 = -200;
+  var enemyY4 = -200;
+  var enemy4h = 0;
+  var enemy4s = 0;
+
+//fifth enemy
+  var enemyX5 = -200;
+  var enemyY5 = -200;
+  var enemy5h = 0;
+  var enemy5s = 0;
+
+  draw = function() {
+    background(100, 10, 50)
+    image(backGround, 0, 0, 1350, 642 );
+
+    //sets up wasd movement
+    if(keyPressed == true) {
+
+      if (key == 'd' || key == 'D') {
+          playerX = playerX + speed;
+      }
+      if (key == 'w' || key == 'W'){
+          playerY = playerY - speed;
+      }
+      if (key == 'a' || key == 'A'){
+          playerX = playerX - speed;
+      }
+      if (key === 's' || key == 'S'){
+          playerY = playerY + speed;
+      }
+
+      /*  if (keyCode == ENTER) {
+          bulletX.push(playerX);
+          bulletY.push(playerY);
+        }*/
+
+      //loops the player to the other side of th screen if they go past the edge
+      if (playerX <= -20){
+        playerX = 1369;
+      } else if (playerY <= -20){
+        playerY = 661;
+      } else if (playerX >= 1370){
+        playerX = -19;
+      } else if (playerY >= 662){
+        playerY = -19;
+      }
+      if(enemy1h <= 0 && enemy2h <= 0 && enemy3h <= 0 && enemy4h <= 0 && enemy5h <= 0 && start == 0){
+        if (key == 'z' || key == 'Z') {
+          playerX = random(20,1330);
+          playerY = random(20,622);
+          start = start + 1;
+          textX = -200;
+          textY = -200;
+        }
+      }
+      //once all enemies are not alive starts the wave timer
+      if(enemy1h <= 0 && enemy2h <= 0 && enemy3h <= 0 && enemy4h <= 0 && enemy5h <= 0 && start == 1){
+        wave += 1;
+        var waveTime = 0;
+        waveTime = waveTime + 10;
+        if (waveTime >= 10){
+
+          //sets the random x and y for the enemies and the ball
+          enemyX1 = random(20,1330);
+          enemyY1 = random(20,622);
+          enemyX2 = random(20,1330);
+          enemyY2 = random(20,622);
+          enemyX3 = random(20,1330);
+          enemyY3 = random(20,622);
+          enemyX4 = random(20,1330);
+          enemyY4 = random(20,622);
+          enemyX5 = random(20,1330);
+          enemyY5 = random(20,622);
+
+          //resets their health
+          enemy1h = startH + wave;
+          enemy2h = startH + wave;
+          enemy3h = startH + wave;
+          enemy4h = startH + wave;
+          enemy5h = startH + wave;
+
+          //sets their speed
+          enemy1s = 0.7 + (wave/10);
+          enemy2s = 0.5 + (wave/10);
+          enemy3s = 0.3 + (wave/10);
+          enemy4s = 0.1 + (wave/10);
+          enemy5s = 0.9 + (wave/10);
+
+        }
+      }
+
+      if(start == 1){
+        endX = 1550;
+        endY = 610;
+        if (key == 'i' || key == 'I'){
+      playerX = -300;
+      playerY = -300;
+      speed = 0;
+      enemyX1 = -400;
+      enemyY1 = -400;
+      enemyX2 = -400;
+      enemyY2 = -400;
+      enemyX3 = -400;
+      enemyY3 = -400;
+      enemyX4 = -400;
+      enemyY4 = -400; 
+      enemyX5 = -400;
+      enemyY5 = -400;
+      overX = 650;
+      overY = 300;
+      endX = -400;
+      endY = -400;
+      }
+    }
+
+      //what happens when the player hits the enemy
+      if ((playerX >= (enemyX1-30) && playerX <= (enemyX1 +30)) && (playerY >= (enemyY1-30) && playerY <= (enemyY1 +30))){
+        enemy1h -= 1;
+        enemyX1 = random(20,1330);
+        enemyY1 = random(20,622);
+      }
+
+      //sets what happens when enemy 1 dies
+      if(enemy1h <= 0){
+        enemyX1 = -200;
+        enemyY1 = -200;
+        enemy1h = 0;
+        enemy1s = 0;
+      }
+
+      if ((playerX >= (enemyX2-30) && playerX <= (enemyX2 +30)) && (playerY >= (enemyY2-30) && playerY <= (enemyY2 +30))){
+        enemy2h -= 1;
+        enemyX2 = random(20,1330);
+        enemyY2 = random(20,622);
+      }
+
+      //when enemy2 dies
+      if(enemy2h <= 0){
+        enemyX2 = -200;
+        enemyY2 = -200;
+        enemy2h = 0;
+        enemy2s = 0;
+      }
+
+      if ((playerX >= (enemyX3-30) && playerX <= (enemyX3 +30)) && (playerY >= (enemyY3-30) && playerY <= (enemyY3 +30))){
+        enemy3h -= 1;
+        enemyX3 = random(20,1330);
+        enemyY3 = random(20,622);
+      }
+
+      //when enemy3 dies
+      if(enemy3h <= 0){
+        enemyX3 = -200;
+        enemyY3 = -200;
+        enemy3h = 0;
+        enemy3s = 0;
+      }
+
+      if ((playerX >= (enemyX4-30) && playerX <= (enemyX4 +30)) && (playerY >= (enemyY4-30) && playerY <= (enemyY4 +30))){
+        enemy4h -= 1;
+        enemyX4 = random(20,1330);
+        enemyY4 = random(20,622);
+      }
+      //when enemy 4 dies
+      if(enemy4h <= 0){
+        enemyX4 = -200;
+        enemyY4 = -200;
+        enemy4h = 0;
+        enemy4s = 0;
+      }
+
+      if ((playerX >= (enemyX5-30) && playerX <= (enemyX5 +30)) && (playerY >= (enemyY5-30) && playerY <= (enemyY5 +30))){
+        enemy5h -= 1;
+        enemyX5 = random(20,1330);
+        enemyY5 = random(20,622);
+      }
+
+      //when enemy 5 dies
+      if(enemy5h <= 0){
+        enemyX5 = -200;
+        enemyY5 = -200;
+        enemy5h = 0;
+        enemy5s = 0;
+      }
+    }
+
+    image(avaLeft, playerX,playerY);
+    image(enemy1, enemyX1, enemyY1);
+    image(enemy2, enemyX2, enemyY2);
+    image(enemy3, enemyX3, enemyY3);
+    image(enemy4, enemyX4, enemyY4);
+    image(enemy5, enemyX5, enemyY5);
+
+    //sets the x, y and speed of the enemies
+    enemySX1 = playerX - enemyX1;
+    enemySY1 = playerY - enemyY1;
+    enemyX1 = enemyX1 + (enemySX1/100*enemy1s);
+    enemyY1 = enemyY1 + (enemySY1/100*enemy1s);
+
+    enemySX2 = playerX - enemyX2;
+    enemySY2 = playerY - enemyY2;
+    enemyX2 = enemyX2 + (enemySX2/100*enemy2s);
+    enemyY2 = enemyY2 + (enemySY2/100*enemy2s);
+
+    enemySX3 = playerX - enemyX3;
+    enemySY3 = playerY - enemyY3;
+    enemyX3 = enemyX3 + (enemySX3/100*enemy3s);
+    enemyY3 = enemyY3 + (enemySY3/100*enemy3s);
+
+    enemySX4 = playerX - enemyX4;
+    enemySY4 = playerY - enemyY4;
+    enemyX4 = enemyX4 + (enemySX4/100*enemy4s);
+    enemyY4 = enemyY4 + (enemySY4/100*enemy4s);
+
+    enemySX5 = playerX - enemyX5;
+    enemySY5 = playerY - enemyY5;
+    enemyX5 = enemyX5 + (enemySX5/100*enemy5s);
+    enemyY5 = enemyY5 + (enemySY5/100*enemy5s);
+
+    /*for (var i = 0; i < array.length; i++) {
+      ellipse(2(i), bulletY(i), 10, 10);
+    }*/
+    var waveText = wave + 1;
+    text("Wave:" + waveText, 1400, 25)
+    text("Ready to quit? press i", endX, endY);
+    textSize(30);
+    text("Press Z to start", textX, textY);
+    textSize(50);
+    fill(205,0,0);
+    text("Suicidal Monsters", textX, textY - 220);
+    textSize(80);
+    text("Game Over", overX, overY);
+    fill(255,255,255);
+
+  }
+
+    </script>
+    <canvas> </canvas>
+  </body>
+</html>
